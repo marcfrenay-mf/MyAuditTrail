@@ -1,0 +1,149 @@
+{
+  "_version": "1.12.0",
+  "sap.app": {
+    "id": "pcc.statistic.sdwp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "ZSDW_PCC_STAT_SRV": {
+        "uri": "/sap/opu/odata/sap/ZSDW_PCC_STAT_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/ZSDW_PCC_STAT_SRV/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "sourceTemplate": {
+      "id": "servicecatalog.connectivityComponentForManifest",
+      "version": "0.0.0",
+      "toolsId": "67872e6f-656a-4ff9-b148-2e6be0cf69e7"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "MyAuditTrail-display": {
+          "semanticObject": "MyAuditTrail",
+          "action": "display",
+          "title": "{{MyAuditTrail-display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "pcc.statistic.sdwp.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "fcl"
+    },
+    "dependencies": {
+      "minUI5Version": "1.141.1",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.f": {},
+        "sap.uxap": {}
+      }
+    },
+    "config": {
+      "fullWidth": true
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "pcc.statistic.sdwp.view",
+        "controlId": "flexibleColumnLayout",
+        "transition": "slide",
+        "bypassed": {},
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": ":layout:",
+          "name": "master",
+          "target": [
+            "master",
+            "detail"
+          ]
+        },
+        {
+          "pattern": "detail/{process}/{layout}",
+          "name": "detail",
+          "target": [
+            "master",
+            "detail"
+          ]
+        },
+        {
+          "pattern": "detail/{process}/detailDetail/{check}/{layout}",
+          "name": "detailDetail",
+          "target": [
+            "master",
+            "detail",
+            "detailDetail"
+          ]
+        }
+      ],
+      "targets": {
+        "master": {
+          "name": "Master",
+          "controlAggregation": "beginColumnPages"
+        },
+        "detail": {
+          "name": "Detail",
+          "controlAggregation": "midColumnPages"
+        },
+        "detailDetail": {
+          "name": "DetailDetail",
+          "controlAggregation": "endColumnPages"
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": false,
+      "cozy": false
+    },
+    "flexEnabled": true,
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "pcc.statistic.sdwp.i18n.i18n"
+        }
+      },
+      "OData": {
+        "type": "sap.ui.model.odata.v2.ODataModel",
+        "settings": {
+          "defaultOperationMode": "Server",
+          "defaultBindingMode": "OneWay",
+          "defaultCountMode": "Request"
+        },
+        "dataSource": "ZSDW_PCC_STAT_SRV",
+        "preload": true
+      },
+      "ZSDW_PCC_STAT_SRV": {
+        "dataSource": "ZSDW_PCC_STAT_SRV",
+        "preload": true,
+        "settings": {}
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": false,
+      "tablet": false,
+      "phone": false
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<mvc:View controllerName="pcc.statistic.sdwp.controller.DetailDetail" xmlns:chart="sap.suite.ui.commons" xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:vizData="sap.viz.ui5.data" xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds" xmlns="sap.m"
+	xmlns:f="sap.f">
+	<f:DynamicPage id="_IDGenDynamicPage1" toggleHeaderOnTitleClick="false">
+		<f:title>
+			<f:DynamicPageTitle id="IDGenDynamicPageTitle1">
+				<f:heading>
+					<FlexBox id="IDGenFlexBox1" wrap="Wrap" fitContainer="true" alignItems="Center">
+						<Title id="IDGenTitle1" text="{OverviewModel>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+						<!--<Title text="{OverviewModel>name}({OverviewModel>TotAlert})" wrapping="true" class="sapUiTinyMarginEnd"/>-->
+					</FlexBox>
+				</f:heading>
+				<f:navigationActions>
+					<!--<Toolbar width="50%" id="toolbar">-->
+					<Label id="VizChartComboBoxTxt" text="{i18n>VizCharType}" required="false" visible="true" labelFor="VizChartComboBox"/>
+					<Select id='VizChartComboBox' class='settingsSelect' selectedKey='{/chartType/defaultSelected}' maxWidth="150px" change='onChartTypeChanged'
+						items="{path: '/chartType/values'}">
+						<items>
+							<core:Item id="_IDGenItem1" text="{name}" key="{key}"/>
+						</items>
+					</Select>
+					<!--</Toolbar>-->
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton1" type="Transparent" icon="sap-icon://full-screen" press=".handleFullScreen" tooltip="Enter Full Screen Mode"
+						visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton2" type="Transparent" icon="sap-icon://exit-full-screen" press=".handleExitFullScreen" tooltip="Exit Full Screen Mode"
+						visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton3" type="Transparent" icon="sap-icon://decline" press=".handleClose" tooltip="Close column"
+						visible="{= ${/actionButtonsInfo/endColumn/closeColumn} !== null }"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<chart:ChartContainer autoAdjustHeight="true" id="chartContainer" showFullScreen="true" title="{LocalOverviewModel>/Title}">
+				<chart:ChartContainerContent id="_IDGenChartContainerContent1" icon="sap-icon://horizontal-stacked-chart">
+					<chart:content>
+						<viz:VizFrame id="idVizFrame" height="100%" width="100%" busy="{LocalOverviewModel>/IsDataLoading}"></viz:VizFrame>							
+					</chart:content>					
+				</chart:ChartContainerContent>				
+			</chart:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

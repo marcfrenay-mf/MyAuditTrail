@@ -1,0 +1,101 @@
+<mvc:View controllerName="pcc.statistic.sdwp.controller.Detail" xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc">
+	<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
+		headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle id="IDGenObjectPageDynamicHeaderTitle1">
+				<expandedHeading>
+					<m:Title id="IDGenTitle1" text="{OverviewModel>name}" wrapping="true" class="sapUiSmallMarginEnd"/>
+				</expandedHeading>
+				<snappedHeading>
+					<m:FlexBox id="IDGenFlexBox1" wrap="Wrap" fitContainer="true" alignItems="Center">
+						<m:FlexBox id="IDGenFlexBox2" wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+							<f:Avatar id="IDGenAvatar1" src="https://sdk.openui5.org/test-resources/sap/ui/documentation/sdk/images/HT-1000.jpg" displaySize="S" displayShape="Square"
+								showBorder="true" class="sapUiTinyMarginEnd"/>
+							<m:Title id="IDGenTitle2" text="{OverviewModel>name}" wrapping="true"/>
+						</m:FlexBox>
+					</m:FlexBox>
+				</snappedHeading>
+				<actions>
+					<!--<m:ToggleButton text="Edit" type="Emphasized" press=".onEditToggleButtonPress"/>-->
+					<!--<m:Button text="Delete" type="Transparent"/>-->
+					<!--<m:Button text="Copy" type="Transparent"/>-->
+					<m:Button id="IDGenButton1" icon="sap-icon://action" type="Transparent" press=".onActionPress"/>
+				</actions>
+				<navigationActions>
+					<m:OverflowToolbarButton id="IDGenOverflowToolbarButton1" type="Transparent" icon="sap-icon://full-screen" press=".handleFullScreen" tooltip="Enter Full Screen Mode"
+						visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+					<m:OverflowToolbarButton id="IDGenOverflowToolbarButton2" type="Transparent" icon="sap-icon://exit-full-screen" press=".handleExitFullScreen" tooltip="Exit Full Screen Mode"
+						visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+					<m:OverflowToolbarButton id="IDGenOverflowToolbarButton3" type="Transparent" icon="sap-icon://decline" press=".handleClose" tooltip="Close column"
+						visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+				</navigationActions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+		<headerContent>
+			<m:FlexBox id="IDGenFlexBox3" wrap="Wrap" fitContainer="true" alignItems="Stretch">
+				<f:Avatar id="IDGenAvatar2" src="https://sdk.openui5.org/test-resources/sap/ui/documentation/sdk/images/HT-1000.jpg" displaySize="L" displayShape="Square" class="sapUiTinyMarginEnd"></f:Avatar>
+				<m:VBox id="IDGenVBox1" justifyContent="Center" class="sapUiSmallMarginEnd">
+					<m:Label id="IDGenLabel1" text="{i18n>ProcessType}"/>
+					<m:Text id="IDGenText1" text="{OverviewModel>Type}"/>
+				</m:VBox>
+				<m:VBox id="IDGenVBox2" justifyContent="Center" class="sapUiSmallMarginEnd">
+					<m:Label id="IDGenLabel2" text="{i18n>CreatedBy}"/>
+					<m:Text id="IDGenText2" text="{OverviewModel>CreatedBy}"/>
+				</m:VBox>
+				<m:VBox id="IDGenVBox3" justifyContent="Center" class="sapUiSmallMarginEnd">
+					<m:Label id="IDGenLabel3" text="{i18n>LastChangedBy}"/>
+					<m:Text id="IDGenText3" text="{OverviewModel>LastChangedBy} "/>
+				</m:VBox>
+			</m:FlexBox>
+		</headerContent>
+		<sections>
+			<ObjectPageSection id="IDGenObjectPageSection1" title="{i18n>Tab1}" titleUppercase="false" >
+				<subSections>
+					<ObjectPageSubSection id="IDGenObjectPageSubSection1">
+						<blocks>
+							<form:SimpleForm id="IDGenSimpleForm1" maxContainerCols="2" editable="false" layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12" emptySpanL="0"
+								emptySpanM="0" columnsL="1" columnsM="1">
+								<form:content>
+									<m:Label id="IDGenLabel4" text="{i18n>Id}"/>
+									<m:Text id="IDGenText4" text="{OverviewModel>Id}"/>
+									<m:Label id="IDGenLabel5" text="{i18n>Status}"/>
+									<m:Text id="IDGenText5" text="{OverviewModel>Status}"/>
+									<m:Label id="IDGenLabel6" text="{i18n>CompletedOn}"/>
+									<m:Text id="IDGenText6" text="{OverviewModel>Completed}" visible="{= ${OverviewModel>Completed} === null ? false : true  }"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection id="IDGenObjectPageSection2" title="{i18n>Tab2}" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection id="IDGenObjectPageSubSection2">
+						<blocks>
+							<m:Table id="checkTable" items="{path : 'OverviewModel>ListOfCheck'}" growing="true" growingThreshold="15" busy="{LocalOverviewModel>/IsDataLoading}">
+								<m:columns>
+									<m:Column id="IDGenColumn1"/>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem id="IDGenColumnListItem1" type="Navigation" press=".onCheckPress">
+										<m:cells>
+											<m:ObjectIdentifier id="IDGenObjectIdentifier1" text="{OverviewModel>name}"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+		<footer>
+			<m:OverflowToolbar id="IDGenOverflowToolbar1">
+				<m:ToolbarSpacer id="IDGenToolbarSpacer1"/>
+				<m:Button id="IDGenButton2" type="Accept" text="Save"/>
+				<m:Button id="IDGenButton3" type="Reject" text="Cancel"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>

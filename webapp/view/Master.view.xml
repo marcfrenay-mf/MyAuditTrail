@@ -1,0 +1,74 @@
+<mvc:View controllerName="pcc.statistic.sdwp.controller.Master" xmlns="sap.m" xmlns:f="sap.f" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core">
+	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle id="IDGenDynamicPageTitle1">
+				<f:heading>
+					<!--<Title text="Payroll Control Center Statistics ({processes>/Statistics/Counts/Total})"/>-->
+					<Title id="IDGenTitle1" text="{i18n>AppTitle}"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!-- DynamicPage Content -->
+		<f:content>
+			<VBox id="IDGenVBox1" fitContainer="true">
+				<OverflowToolbar id="IDGenOverflowToolbar1" class="sapFDynamicPageAlignContent">
+					<!--<ToolbarSpacer/>-->
+					<!--<SearchField search=".onSearch" width="50%"/>-->
+					<SearchField id="IDGenSearchField1" liveChange=".onSearch" width="50%"/>
+					<Label id="YearComboBoxTxt" text="{i18n>Year}" required="false" visible="true" labelFor="YearComboBox"/>
+					<ComboBox xmlns="sap.m" id="YearComboBox" items="{OverviewModel>/Filter/Years}" selectionChange="onChangeYear" width="20%">
+						<core:Item id="IDGenItem1" xmlns:core="sap.ui.core" key="{OverviewModel>Year}" text="{OverviewModel>Year}"/>
+					</ComboBox>
+					<!--<OverflowToolbarButton icon="sap-icon://add" text="Add" type="Transparent" press=".onAdd"/>-->
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton1" icon="sap-icon://sort" text="Sort" type="Transparent" press=".onSort"/>
+				</OverflowToolbar>
+				<Table id="processesTable" inset="false" items="{ path: 'OverviewModel>/ListOfProcess', sorter: { path: 'Name' } }"
+					class="sapFDynamicPageAlignContent" width="auto" busy="{LocalOverviewModel>/IsDataLoading}">
+					<columns>
+						<Column id="IDGenColumn1" >
+							<Text id="IDGenText1" text="{i18n>Id}"/>
+						</Column>
+						<Column id="IDGenColumn2" width="12em">
+							<Text id="IDGenText2" text="{i18n>NbAlert}"/>
+						</Column> 
+						<Column id="IDGenColumn3" hAlign="End">
+							<Text id="IDGenText3" text="{i18n>Period}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem id="IDGenColumnListItem1" type="Navigation" press=".onListItemPress">
+							<cells>
+								<ObjectIdentifier id="IDGenObjectIdentifier1" title="{OverviewModel>Name}" text="{OverviewModel>Id}"/>
+								<VBox id="ActiveProcessesList-StatusArea">
+									<ObjectStatus 
+										id="ProcessesList-Status" 
+										text="{parts: [{path: 'ErrorStatus'}], formatter: '.formatter.processStatusText'}"
+										icon="sap-icon://status-error" 										
+										state="{= ${OverviewModel>NrError} === 0 ? 'Success' : 'Error'}"/>
+									<ObjectNumber 
+								    	id="ProcessesList-AlertCount"
+										visible="{= ${OverviewModel>NrError} > 0 ? true : false}"
+										class="sapUiTinyMarginTop"
+										number="{OverviewModel>NrError}" 
+										unit="{parts: [{path: 'AlertCount'}], formatter: '.formatter.errorCountUnit'}"
+										state="{= ${OverviewModel>NrError} === 0 ? 'Success' : 'Error'}"/> 
+								</VBox>
+								<Label id="IDGenLabel1" text="{OverviewModel>Period}" class="sapUiSmallMarginTop"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</f:content>
+		<!-- DynamicPage Footer -->
+		<f:footer>
+			<OverflowToolbar id="IDGenOverflowToolbar2">
+				<ToolbarSpacer id="IDGenToolbarSpacer1"/>
+				<Button id="IDGenButton1" type="Accept" text="Accept"/>
+				<Button id="IDGenButton2" type="Reject" text="Reject"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>
