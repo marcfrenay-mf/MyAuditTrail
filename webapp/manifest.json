@@ -85,7 +85,7 @@
           ]
         },
         {
-          "pattern": "detail/{process}/detailDetail/{check}/{layout}",
+          "pattern": "detail/{process}/detailDetail/{validationRule}/{layout}",
           "name": "detailDetail",
           "target": [
             "master",
@@ -115,6 +115,8 @@
     },
     "flexEnabled": true,
     "models": {
+          
+      
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {

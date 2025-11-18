@@ -11,10 +11,10 @@ sap.ui.define([
 
 	return Controller.extend("pcc.statistic.sdwp.controller.Master", {
 		onInit: function () {
-			this.LocalOverviewModel = new JSONModel({
+			this.LocalModel = new JSONModel({
 				"IsDataLoading": true
 			});
-			this.getView().setModel(this.LocalOverviewModel, "LocalOverviewModel");
+			this.getView().setModel(this.LocalModel, "LocalModel");
 
 			this._bDescendingSort = false;
 			this.oprocessesTable = this.oView.byId("processesTable");
@@ -31,23 +31,22 @@ sap.ui.define([
 		},
 
 		_bind: function () {
-			this.getView().getModel("LocalOverviewModel").setProperty("/IsDataLoading", true);
+			this.getView().getModel("LocalModel").setProperty("/IsDataLoading", true);
 			var that = this;
 			this._readYear().then(function (oRetrievedResult) {
 				that.getOwnerComponent().getModel("OverviewModel").setProperty("/Filter/Years", oRetrievedResult.results);
 			});
 
-			this._readData().then(function (oRetrievedResult) {
+			this._readProcesses().then(function (oRetrievedResult) {
 				that.getOwnerComponent().getModel("OverviewModel").setProperty("/ListOfProcess", oRetrievedResult.results);
-				that.getView().getModel("LocalOverviewModel").setProperty("/IsDataLoading", false);
+				that.getView().getModel("LocalModel").setProperty("/IsDataLoading", false);
 			});
 		},
 
-		_readData: function () {
+		_readProcesses: function () {
 			return new Promise(function (resolve, reject) {
-				this.oODataModel.read("/GetMonthlyDataSet", {
-					filters: [
-						new Filter("Action", FilterOperator.EQ, 'refreshProcess'),
+				this.oODataModel.read("/ProcessSet", {
+					filters: [					    
 						new Filter("CurrentYear", FilterOperator.EQ, this.CurrentYear)
 					],
 					success: function (oRetrievedResult) {
@@ -62,7 +61,7 @@ sap.ui.define([
 
 		_readYear: function () {
 			return new Promise(function (resolve, reject) {
-				this.oODataModel.read("/GetPeriodSet", {
+				this.oODataModel.read("/PeriodSet", {
 					success: function (oRetrievedResult) {
 						resolve(oRetrievedResult);
 					}.bind(this),

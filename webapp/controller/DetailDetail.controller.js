@@ -11,14 +11,14 @@ sap.ui.define([
 
 	return Controller.extend("pcc.statistic.sdwp.controller.DetailDetail", {
 		onInit: function () {
-			var LocalOverviewModel = new JSONModel({
-				"ChartLine": [],
+			var LocalModel = new JSONModel({
+				"TimeSeries": [],
+				"Stacked": [],
 				"Title": "",
 				"IsDataLoading": false
 			});
-			
-			this.getView().setModel(LocalOverviewModel, "LocalOverviewModel");
-			this.prevCheck = "-1";
+
+			this.getView().setModel(LocalModel, "LocalModel");
 			this.oOwnerComponent = this.getOwnerComponent();
 
 			//read onpremise data bounded with the manifest source
@@ -26,12 +26,12 @@ sap.ui.define([
 
 			//Object for navigation
 			this.oRouter = this.oOwnerComponent.getRouter();
-			this.oRouter.getRoute("detailDetail").attachPatternMatched(this.onCheckMatch, this);
+			this.oRouter.getRoute("detailDetail").attachPatternMatched(this.onValidationRuleMatch, this);
 			this.oModel = this.oOwnerComponent.getModel();
 
 			this.getView().setModel(new JSONModel(this.settingsModel));
-			
-			this.currentVizIndex = '3'; //Default Value
+
+			this.currentVizIndex = '2'; //Default Value
 			var vizChartComboBox = this.getView().byId("VizChartComboBox");
 			vizChartComboBox.setSelectedKey(this.currentVizIndex);
 
@@ -40,10 +40,10 @@ sap.ui.define([
 			for (let i = 0; i < vizChartComboBox.getItems().length; i++) {
 				var i18nChartName = this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(this.settingsModel.chartType.values[i].name);
 				this.settingsModel.chartType.values[i].name = i18nChartName;
-			}			
+			}
 
 			//Set the VizFrame
-			this.oVizFrame = this.getView().byId("idVizFrame");						
+			this.oVizFrame = this.getView().byId("idVizFrame");
 			this.setChartType();
 
 			this.selectedData = []; //unused for the time being
@@ -54,25 +54,26 @@ sap.ui.define([
 
 		settingsModel: {
 			chartType: {
-				name: "Chart Type",
+				//name: "Chart Type",
 				values: [{
 					key: "0",
 					name: "ChartNameKey0",
 					vizType: "100_stacked_bar",
+					oData: "/StackedSet",
 					dataset: {
 						dimensions: [{
-							name: "processor",
-							value: "{processor}"
+							name: "Processor",
+							value: "{Processor}"
 						}, {
-							name: "statut",
-							value: "{statut}"
+							name: "Status",
+							value: "{Status}"
 						}],
 						measures: [{
-							name: "nrAlert",
-							value: "{nrAlert}"
+							name: "NrAlert",
+							value: "{NrAlert}"
 						}],
 						data: {
-							path: "OverviewModel>data"
+							path: "LocalModel>/ODataSet"
 						}
 					},
 					vizProperties: {
@@ -113,20 +114,21 @@ sap.ui.define([
 					key: "1",
 					name: "ChartNameKey1",
 					vizType: "stacked_column",
+					oData: "/StackedSet",
 					dataset: {
 						dimensions: [{
-							name: "processor",
-							value: "{processor}"
+							name: "Processor",
+							value: "{Processor}"
 						}, {
-							name: "statut",
-							value: "{statut}"
+							name: "Status",
+							value: "{Status}"
 						}],
 						measures: [{
-							name: "nrAlert",
-							value: "{nrAlert}"
+							name: "NrAlert",
+							value: "{NrAlert}"
 						}],
 						data: {
-							path: "OverviewModel>data"
+							path: "LocalModel>/ODataSet"
 						}
 					},
 					vizProperties: {
@@ -163,10 +165,12 @@ sap.ui.define([
 							visible: true
 						}
 					}
-				}, {
+				},
+				{
 					key: "2",
 					name: "ChartNameKey2",
 					vizType: "timeseries_line",
+					oData: "/TimeSeriesSet",
 					dataset: {
 						dimensions: [{
 							name: 'Date',
@@ -178,74 +182,13 @@ sap.ui.define([
 							value: "{TotAlert}"
 						}],
 						data: {
-							path: "LocalOverviewModel>/ChartLine"
+							path: "LocalModel>/ODataSet"
 						}
 					},
 					vizProperties: {
 						title: {
 							visible: true,
 							text: "TitleVizKey2"
-						},
-						plotArea: {
-							// window: {
-							// 	start: "firstDataPoint",
-							// 	end: "lastDataPoint"
-							// },
-							dataLabel: {
-								visible: true
-							},
-							drawingEffect: "glossy"
-						},
-						legendGroup: {
-							layout: {
-								position: "top"
-							}
-						},
-						legend: {
-							visible: true,
-							drawingEffect: "glossy",
-							title: {
-								visible: true,
-								text: "Legend"
-							}
-						},
-						valueAxis: {
-							visible: true
-						},
-						timeAxis: {
-							title: {
-								visible: true
-							},
-							interval: {
-								unit: ''
-							}
-						},
-						interaction: {
-							syncValueAxis: false
-						}
-					}
-				}, {
-					key: "3",
-					name: "ChartNameKey3",
-					vizType: "timeseries_line",
-					dataset: {
-						dimensions: [{
-							name: 'Date',
-							value: "{Date}",
-							dataType: 'Date'
-						}],
-						measures: [{
-							name: "TotAlert",
-							value: "{TotAlert}"
-						}],
-						data: {
-							path: "LocalOverviewModel>/ChartLine"
-						}
-					},
-					vizProperties: {
-						title: {
-							visible: true,
-							text: "TitleVizKey3"
 						},
 						plotArea: {
 							/* window: {
@@ -296,34 +239,34 @@ sap.ui.define([
 					this.oVizFrame.addFeed(new FeedItem({
 						"uid": "valueAxis",
 						"type": "Measure",
-						"values": ["nrAlert"]
+						"values": ["NrAlert"]
 					}));
 					this.oVizFrame.addFeed(new FeedItem({
 						"uid": "categoryAxis",
 						"type": "Dimension",
-						"values": ["processor"]
+						"values": ["Processor"]
 					}));
 					this.oVizFrame.addFeed(new FeedItem({
 						"uid": "color",
 						"type": "Dimension",
-						"values": ["statut"]
+						"values": ["Status"]
 					}));
 					break;
 				case "1":
 					this.oVizFrame.addFeed(new FeedItem({
 						"uid": "valueAxis",
 						"type": "Measure",
-						"values": ["nrAlert"]
+						"values": ["NrAlert"]
 					}));
 					this.oVizFrame.addFeed(new FeedItem({
 						"uid": "categoryAxis",
 						"type": "Dimension",
-						"values": ["processor"]
+						"values": ["Processor"]
 					}));
 					this.oVizFrame.addFeed(new FeedItem({
 						"uid": "color",
 						"type": "Dimension",
-						"values": ["statut"]
+						"values": ["Status"]
 					}));
 					break;
 				case "2":
@@ -338,19 +281,6 @@ sap.ui.define([
 						'values': ["Date"]
 					}));
 					break;
-				case "3":
-					this.oVizFrame.addFeed(new FeedItem({
-						"uid": "valueAxis",
-						"type": "Measure",
-						"values": ["TotAlert"]
-					}));
-					this.oVizFrame.addFeed(new FeedItem({
-						'uid': "timeAxis",
-						'type': "Dimension",
-						'values': ["Date"]
-					}));
-
-					break;
 				default:
 				// this.oVizFrame.addFeed(oFeedValueAxis);
 				// this.oVizFrame.addFeed(oFeedCategoryAxis);
@@ -359,46 +289,8 @@ sap.ui.define([
 			}
 		},
 
-		readChartLine: function () {
-			if (this.process && (this.prevCheck !== this.check || this.onChartTypeChanged === true)) {
-				var currentProcess = this.getOwnerComponent().getModel("OverviewModel").getProperty("/ListOfProcess");
-				this.currentProcessInstId = currentProcess[this.process].Id;
-				this.currentCheckId = currentProcess[this.process].ListOfCheck[this.check].id;
-
-				this.getView().getModel("LocalOverviewModel").setProperty("/IsDataLoading", true);
-				var that = this;
-				this.readDataChartLine().then(function (oRetrievedResult) {
-					that.getView().getModel("LocalOverviewModel").setProperty("/ChartLine", oRetrievedResult.results);
-					that.getView().getModel("LocalOverviewModel").setProperty("/IsDataLoading", false);
-					that.prevCheck = that._check;
-					that.setChartType();
-				});
-			}
-			this.onChartTypeChanged = false;
-		},
-
-		readDataChartLine: function () {
-			return new Promise(function (resolve, reject) {
-				this.oODataModel.read("/ChartLineSet", {
-					filters: [
-						new Filter("CurrentAction", FilterOperator.EQ, this.getOwnerComponent().getModel("OverviewModel").getProperty("/CurrentAction")),
-						new Filter("CurrentYear", FilterOperator.EQ, this.getOwnerComponent().getModel("OverviewModel").getProperty("/CurrentYear")),
-						new Filter("IdCheck", FilterOperator.EQ, this.currentCheckId),
-						new Filter("IdProcessInst", FilterOperator.EQ, this.currentProcessInstId)
-					],
-					success: function (oRetrievedResult) {
-						resolve(oRetrievedResult);
-
-					}.bind(this),
-					error: function (oError) {
-						resolve(oError);
-					}
-				});
-			}.bind(this));
-		},
-
 		setChartType: function () {
-			this.getView().getModel("LocalOverviewModel").setProperty("/Title", this.settingsModel.chartType.values[this.currentVizIndex].name);
+			this.getView().getModel("LocalModel").setProperty("/Title", this.settingsModel.chartType.values[this.currentVizIndex].name);
 
 			this.oVizFrame.destroyDataset();
 			this.oVizFrame.destroyFeeds();
@@ -414,23 +306,10 @@ sap.ui.define([
 		},
 
 		onChartTypeChanged: function (oEvent) {
-			this.onChartTypeChanged = true;
-			if (this.oVizFrame) {
-				this.currentVizIndex = oEvent.getSource().getSelectedKey();
-				switch (this.currentVizIndex) {
-					case "0":
-						break;
-					case "2":
-						this.getOwnerComponent().getModel("OverviewModel").setProperty("/CurrentAction", "refreshYearlyData");
-						break;
-					case "3":
-						this.getOwnerComponent().getModel("OverviewModel").setProperty("/CurrentAction", "refreshMonthlyData");
-						break;
-					default:
-						break;
-				}
-				this.readChartLine();
-			}
+			//this.onChartTypeChanged = true;
+			this.currentVizIndex = oEvent.getSource().getSelectedKey();
+			this._bind();
+			this.setChartType();
 		},
 
 		onSelectVizData: function (oEvent) {
@@ -456,18 +335,50 @@ sap.ui.define([
 		// 	oVizFrameDataForTable.setModel("/mockdata/OverviewModel.json");
 		// },
 
-		onCheckMatch: function (oEvent) {
-			this.check = oEvent.getParameter("arguments").check || this.check || "0";
-			this.process = oEvent.getParameter("arguments").process || this.process || "0";
+		onValidationRuleMatch: function (oEvent) {
+			this._validationRule = oEvent.getParameter("arguments").validationRule || this._validationRule || "0";
+			this._process = oEvent.getParameter("arguments").process || this._process || "0";
 
 			this.getView().bindElement({
-				path: "/ListOfProcess/" + this.process + "/ListOfCheck/" + this.check,
+				path: "/ValidationRule/" + this._validationRule,
 				model: "OverviewModel"
 			});
-			// if (this.prevCheck !== this.check) {
-			this.readChartLine();
-			// }
+			this._bind();
+		},
 
+		_bind: function () {
+			if (this._process !== null) {
+				this.getView().getModel("LocalModel").setProperty("/IsDataLoading", true);
+				var that = this;
+				this._readData().then(function (oRetrievedResult) {
+					//if (oRetrievedResult.results.length !== 0) {
+						that.getView().getModel("LocalModel").setProperty("/ODataSet", oRetrievedResult.results);						
+					//}
+					that.getView().getModel("LocalModel").setProperty("/IsDataLoading", false);
+					that.prevProcess = that._process;
+				});
+			}
+		},
+
+		_readData: function () {
+			return new Promise(function (resolve, reject) {
+				var currentProcess = this.getOwnerComponent().getModel("OverviewModel").getProperty("/ListOfProcess");
+				var currentValidationRule = this.getOwnerComponent().getModel("OverviewModel").getProperty("/ValidationRule");
+				if (currentProcess.length !== 0) {					
+					this.oODataModel.read(this.settingsModel.chartType.values[this.currentVizIndex].oData, {
+						filters: [
+							new Filter("IdProcessInst", FilterOperator.EQ, currentProcess[this._process].Id),
+							new Filter("IdCheck", FilterOperator.EQ, currentValidationRule[this._validationRule].Id)
+						],
+						success: function (oRetrievedResult) {
+							resolve(oRetrievedResult);
+						}.bind(this),
+						error: function (oError) {
+							resolve(oError);
+						}
+					});
+				}
+			}.bind(this));
 		},
 
 		// handleAboutPress: function () {
@@ -482,8 +393,8 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
 			this.oRouter.navTo("detailDetail", {
 				layout: sNextLayout,
-				process: this.process,
-				check: this.check
+				process: this._process,
+				validationRule: this._validationRule
 			});
 		},
 
@@ -491,8 +402,8 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
 			this.oRouter.navTo("detailDetail", {
 				layout: sNextLayout,
-				process: this.process,
-				check: this.check
+				process: this._process,
+				validationRule: this._validationRule
 			});
 		},
 
@@ -505,12 +416,12 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
 			this.oRouter.navTo("detail", {
 				layout: sNextLayout,
-				process: this.process
+				process: this._process
 			});
 		},
 
 		onExit: function () {
-			this.oRouter.getRoute("detailDetail").detachPatternMatched(this.onCheckMatch, this);
+			this.oRouter.getRoute("detailDetail").detachPatternMatched(this.onValidationRuleMatch, this);
 		}
 	});
 });

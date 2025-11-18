@@ -19,20 +19,20 @@
 					<SearchField id="IDGenSearchField1" liveChange=".onSearch" width="50%"/>
 					<Label id="YearComboBoxTxt" text="{i18n>Year}" required="false" visible="true" labelFor="YearComboBox"/>
 					<ComboBox xmlns="sap.m" id="YearComboBox" items="{OverviewModel>/Filter/Years}" selectionChange="onChangeYear" width="20%">
-						<core:Item id="IDGenItem1" xmlns:core="sap.ui.core" key="{OverviewModel>Year}" text="{OverviewModel>Year}"/>
+						<core:Item id="IDGenItem1" xmlns:core="sap.ui.core" key="{OverviewModel>Years}" text="{OverviewModel>Years}"/>
 					</ComboBox>
 					<!--<OverflowToolbarButton icon="sap-icon://add" text="Add" type="Transparent" press=".onAdd"/>-->
 					<OverflowToolbarButton id="IDGenOverflowToolbarButton1" icon="sap-icon://sort" text="Sort" type="Transparent" press=".onSort"/>
 				</OverflowToolbar>
 				<Table id="processesTable" inset="false" items="{ path: 'OverviewModel>/ListOfProcess', sorter: { path: 'Name' } }"
-					class="sapFDynamicPageAlignContent" width="auto" busy="{LocalOverviewModel>/IsDataLoading}">
+					class="sapFDynamicPageAlignContent" width="auto" busy="{LocalModel>/IsDataLoading}">
 					<columns>
 						<Column id="IDGenColumn1" >
 							<Text id="IDGenText1" text="{i18n>Id}"/>
 						</Column>
-						<Column id="IDGenColumn2" width="12em">
+						<!--<Column id="IDGenColumn2" width="12em">
 							<Text id="IDGenText2" text="{i18n>NbAlert}"/>
-						</Column> 
+						</Column> -->
 						<Column id="IDGenColumn3" hAlign="End">
 							<Text id="IDGenText3" text="{i18n>Period}"/>
 						</Column>
@@ -41,7 +41,7 @@
 						<ColumnListItem id="IDGenColumnListItem1" type="Navigation" press=".onListItemPress">
 							<cells>
 								<ObjectIdentifier id="IDGenObjectIdentifier1" title="{OverviewModel>Name}" text="{OverviewModel>Id}"/>
-								<VBox id="ActiveProcessesList-StatusArea">
+								<!--<VBox id="ActiveProcessesList-StatusArea">
 									<ObjectStatus 
 										id="ProcessesList-Status" 
 										text="{parts: [{path: 'ErrorStatus'}], formatter: '.formatter.processStatusText'}"
@@ -53,8 +53,8 @@
 										class="sapUiTinyMarginTop"
 										number="{OverviewModel>NrError}" 
 										unit="{parts: [{path: 'AlertCount'}], formatter: '.formatter.errorCountUnit'}"
-										state="{= ${OverviewModel>NrError} === 0 ? 'Success' : 'Error'}"/> 
-								</VBox>
+										state="{= ${OverviewModel>NrError} === 0 ? 'Success' : 'Error'}"/>
+								</VBox> -->
 								<Label id="IDGenLabel1" text="{OverviewModel>Period}" class="sapUiSmallMarginTop"/>
 							</cells>
 						</ColumnListItem>

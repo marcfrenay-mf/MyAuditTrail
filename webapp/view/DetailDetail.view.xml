@@ -31,10 +31,10 @@
 			</f:DynamicPageTitle>
 		</f:title>
 		<f:content>
-			<chart:ChartContainer autoAdjustHeight="true" id="chartContainer" showFullScreen="true" title="{LocalOverviewModel>/Title}">
-				<chart:ChartContainerContent id="_IDGenChartContainerContent1" icon="sap-icon://horizontal-stacked-chart">
+			<chart:ChartContainer autoAdjustHeight="true" id="chartContainer" showFullScreen="false" title="{LocalModel>/Title}" showZoom="false" showLegendButton="false">
+				<chart:ChartContainerContent id="_IDGenChartContainerContent1" >
 					<chart:content>
-						<viz:VizFrame id="idVizFrame" height="100%" width="100%" busy="{LocalOverviewModel>/IsDataLoading}"></viz:VizFrame>							
+						<viz:VizFrame id="idVizFrame" height="100%" width="100%" busy="{LocalModel>/IsDataLoading}"></viz:VizFrame>							
 					</chart:content>					
 				</chart:ChartContainerContent>				
 			</chart:ChartContainer>

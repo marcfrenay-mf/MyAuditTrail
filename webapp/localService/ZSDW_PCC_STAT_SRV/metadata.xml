@@ -2,13 +2,20 @@
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
     <edmx:DataServices m:DataServiceVersion="2.0">
         <Schema Namespace="ZSDW_PCC_STAT_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-            <EntityType Name="GetPeriod" sap:content-version="1">
+            <EntityType Name="Period" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="Year"/>
+                    <PropertyRef Name="Years"/>
                 </Key>
-                <Property Name="Year" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Years" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
-            <EntityType Name="GetMonthlyData" sap:content-version="1">
+            <EntityType Name="ValidationRule" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name" Type="Edm.String" MaxLength="120" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Process" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Id"/>
                 </Key>
@@ -20,30 +27,40 @@
                 <Property Name="Name" Type="Edm.String" MaxLength="120" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Period" Type="Edm.String" MaxLength="100" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Status" Type="Edm.String" MaxLength="100" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="NrError" Type="Edm.String" MaxLength="100" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="ListOfCheck" Type="Edm.String" sap:unicode="false" sap:label="XML" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="CurrentYear" Type="Edm.String" MaxLength="100" sap:unicode="false" sap:label="Character 100" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Action" Type="Edm.String" MaxLength="100" sap:unicode="false" sap:label="Character 100" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
-            <EntityType Name="ChartLine" sap:content-version="1">
+            <EntityType Name="Stacked" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="CurrentYear"/>
+                    <PropertyRef Name="Processor"/>
+                    <PropertyRef Name="Status"/>
+                    <PropertyRef Name="IdCheck"/>
+                    <PropertyRef Name="IdProcessInst"/>
+                    <PropertyRef Name="NrAlert"/>
+                </Key>
+                <Property Name="Processor" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdCheck" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdProcessInst" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="NrAlert" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="TimeSeries" sap:content-version="1">
+                <Key>
                     <PropertyRef Name="TotAlert"/>
                     <PropertyRef Name="Date"/>
                     <PropertyRef Name="IdCheck"/>
                     <PropertyRef Name="IdProcessInst"/>
                 </Key>
-                <Property Name="CurrentYear" Type="Edm.String" Nullable="false" MaxLength="7" sap:unicode="false" sap:label="TotAlert" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="TotAlert" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="TotAlert" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Date" Type="Edm.DateTime" Nullable="false" Precision="0" sap:unicode="false" sap:label="Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="CurrentAction" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="IdCheck" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="IdProcessInst" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityContainer Name="ZSDW_PCC_STAT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-                <EntitySet Name="GetPeriodSet" EntityType="ZSDW_PCC_STAT_SRV.GetPeriod" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
-                <EntitySet Name="GetMonthlyDataSet" EntityType="ZSDW_PCC_STAT_SRV.GetMonthlyData" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
-                <EntitySet Name="ChartLineSet" EntityType="ZSDW_PCC_STAT_SRV.ChartLine" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="PeriodSet" EntityType="ZSDW_PCC_STAT_SRV.Period" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ValidationRuleSet" EntityType="ZSDW_PCC_STAT_SRV.ValidationRule" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ProcessSet" EntityType="ZSDW_PCC_STAT_SRV.Process" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="StackedSet" EntityType="ZSDW_PCC_STAT_SRV.Stacked" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="TimeSeriesSet" EntityType="ZSDW_PCC_STAT_SRV.TimeSeries" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
             </EntityContainer>
             <atom:link rel="self" href="/sap/opu/odata/sap/ZSDW_PCC_STAT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
             <atom:link rel="latest-version" href="/sap/opu/odata/sap/ZSDW_PCC_STAT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
