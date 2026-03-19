@@ -55,12 +55,34 @@
                 <Property Name="IdCheck" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="IdProcessInst" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
+            <EntityType Name="VR_without_change" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="IdProcessInst"/>
+                </Key>
+                <Property Name="Date" Type="Edm.DateTime" Precision="0" sap:unicode="false" sap:label="Character 100" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Processor" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdCheck" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdProcessInst" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TotAlert" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="VR_test" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="IdProcessInst"/>
+                </Key>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdCheck" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdProcessInst" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TotAlert" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="@SL\QLabel Editor@" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
             <EntityContainer Name="ZSDW_PCC_STAT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
                 <EntitySet Name="PeriodSet" EntityType="ZSDW_PCC_STAT_SRV.Period" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ValidationRuleSet" EntityType="ZSDW_PCC_STAT_SRV.ValidationRule" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ProcessSet" EntityType="ZSDW_PCC_STAT_SRV.Process" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="StackedSet" EntityType="ZSDW_PCC_STAT_SRV.Stacked" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="TimeSeriesSet" EntityType="ZSDW_PCC_STAT_SRV.TimeSeries" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="VR_without_changeset" EntityType="ZSDW_PCC_STAT_SRV.VR_without_change" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="VR_test_Set" EntityType="ZSDW_PCC_STAT_SRV.VR_test" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
             </EntityContainer>
             <atom:link rel="self" href="/sap/opu/odata/sap/ZSDW_PCC_STAT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
             <atom:link rel="latest-version" href="/sap/opu/odata/sap/ZSDW_PCC_STAT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>

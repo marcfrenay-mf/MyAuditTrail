@@ -92,6 +92,15 @@
             "detail",
             "detailDetail"
           ]
+        },
+        {
+          "pattern": "detail/{process}/detailDetailKPI/{KPIRule}/{layout}",
+          "name": "detailDetailKPI",
+          "target": [
+            "master",
+            "detail",
+            "detailDetailKPI"
+          ]
         }
       ],
       "targets": {
@@ -106,6 +115,10 @@
         "detailDetail": {
           "name": "DetailDetail",
           "controlAggregation": "endColumnPages"
+        },
+        "detailDetailKPI": {
+          "name": "DetailDetailKPI",
+          "controlAggregation": "endColumnPages"
         }
       }
     },
@@ -115,8 +128,6 @@
     },
     "flexEnabled": true,
     "models": {
-          
-      
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {

@@ -23,7 +23,23 @@ sap.ui.define([
 				"ListOfProcess": [],
 				"Filter": [],
 				"Statistics": [],
-				"CurrentAction": ""
+				"CurrentAction": "",
+				"KPI": [
+					{
+						"Description": "blabla",
+						"Name": "Validation without change beyond 5 days",
+						"Id": "VR_without_change",
+						"Status": "None", //Warning Error Success
+						"TotAlert": 0
+					},
+					{
+						"Description": "VR 2",
+						"Name": "Test KPI",
+						"Id": "VR_test",
+						"Status": "None",
+						"TotAlert": 0
+					}
+				]
 			});
 			this.setModel(OverviewModel, "OverviewModel");
 

@@ -4,32 +4,21 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator",
 	"sap/m/MessageToast",
 	"sap/ui/model/resource/ResourceModel",
-	"sap/ui/model/json/JSONModel"
+	"sap/ui/model/json/JSONModel",
+	//	"MyPCC/model/Format"  // Chemin vers votre fichier format.js
 ], function (Controller, Filter, FilterOperator, MessageToast, ResourceModel, JSONModel) {
 	"use strict";
 
 	return Controller.extend("pcc.statistic.sdwp.controller.Detail", {
+		//formatter: formatter,
+
 		onInit: function () {
 			this.LocalModel = new JSONModel({
-				"IsDataLoading": false,
-				"KPI": [
-					{
-						"Description": "Notebook Basic 15 with 2,80 GHz quad core, 15\" LCD, 4 GB DDR3 RAM, 500 GB Hard Disc, Windows 8 Pro",
-						"Name": "Notebook Basic 15",
-						"ProductPicUrl": "test-resources/sap/ui/documentation/sdk/images/HT-1000.jpg",
-						"Status": "Information",					
-						"Quantity": 24
-					},
-					{
-						"Description": "Notebook Basic 17 with 2,80 GHz quad core, 17\" LCD, 4 GB DDR3 RAM, 500 GB Hard Disc, Windows 8 Pro",
-						"Name": "Notebook Basic 17",
-						"ProductPicUrl": "test-resources/sap/ui/documentation/sdk/images/HT-1001.jpg",
-						"Status": "Success",
-						"Quantity": 14
-					}
-				]
+				"IsDataLoadingVR": false,
+				"IsDataLoadingKPI": false
 			});
-			this.prevProcess = "-1";
+
+
 			this.getView().setModel(this.LocalModel, "LocalModel");
 
 			this.oOwnerComponent = this.getOwnerComponent();
@@ -39,6 +28,7 @@ sap.ui.define([
 			this.oRouter.getRoute("master").attachPatternMatched(this.onProcessMatched, this);
 			this.oRouter.getRoute("detail").attachPatternMatched(this.onProcessMatched, this);
 			this.oRouter.getRoute("detailDetail").attachPatternMatched(this.onProcessMatched, this);
+			this.oRouter.getRoute("detailDetailKPI").attachPatternMatched(this.onProcessMatched, this);
 
 			this.oModel = this.oOwnerComponent.getModel();
 
@@ -62,15 +52,24 @@ sap.ui.define([
 		},
 
 		onKPIPress: function (oEvent) {
-			MessageToast.show("Request details for item with ID " + oEvent.getSource().getId());
+			//var KPIPath = oEvent.getParameter("listItem").getBindingContext("OverviewModel").getPath(),
+			var KPIPath = oEvent.getSource().getBindingContext("OverviewModel").getPath(),
+				KPIRule = KPIPath.split("/").slice(-1).pop(),
+				oNextUIState;
+
+			this.oOwnerComponent.getHelper().then(function (oHelper) {
+				oNextUIState = oHelper.getNextUIState(2);
+				this.oRouter.navTo("detailDetailKPI", {
+					layout: oNextUIState.layout,
+					KPIRule: KPIRule,
+					process: this._process
+				});
+			}.bind(this));
 		},
 
 		onProcessMatched: function (oEvent) {
 			this._process = oEvent.getParameter("arguments").process || this._process || "0";
-			//if (this.prevProcess !== this._process) {
 			this._bind();
-			//}
-
 			this.getView().bindElement({
 				path: "/ListOfProcess/" + this._process,
 				model: "OverviewModel"
@@ -79,14 +78,41 @@ sap.ui.define([
 
 		_bind: function () {
 			if (this._process !== null) {
-				this.getView().getModel("LocalModel").setProperty("/IsDataLoading", true);
+				this.getView().getModel("LocalModel").setProperty("/IsDataLoadingVR", true);
+				this.getView().getModel("LocalModel").setProperty("/IsDataLoadingKPI", true);
 				var that = this;
 				this._readData().then(function (oRetrievedResult) {
 					if (oRetrievedResult.results.length !== 0) {
 						that.getView().getModel("OverviewModel").setProperty("/ValidationRule", oRetrievedResult.results);
 					}
-					that.getView().getModel("LocalModel").setProperty("/IsDataLoading", false);
-					that.prevProcess = that._process;
+					that.getView().getModel("LocalModel").setProperty("/IsDataLoadingVR", false);
+				});
+				this._readData_VR_without_change().then(function (oRetrievedResult) {
+					that.getView().getModel("OverviewModel").setProperty("/KPIOdata0", oRetrievedResult.results);
+					if (oRetrievedResult.results.length == 0) {
+						that.getView().getModel("OverviewModel").setProperty("/KPI/0/TotAlert", 0);
+						that.getView().getModel("OverviewModel").setProperty("/KPI/0/Status", "None");
+					}
+					else {
+						//Below the "0" is hardcoded because we know that its index is 0
+						that.getView().getModel("OverviewModel").setProperty("/KPI/0/TotAlert", oRetrievedResult.results[0].TotAlert);
+						that.getView().getModel("OverviewModel").setProperty("/KPI/0/Status", oRetrievedResult.results[0].Status);
+					}
+					that.getView().getModel("LocalModel").setProperty("/IsDataLoadingKPI", false);
+				});
+
+				this._readData_VR_test().then(function (oRetrievedResult) {
+					that.getView().getModel("OverviewModel").setProperty("/KPIOdata1", oRetrievedResult.results);
+					if (oRetrievedResult.results.length == 0) {
+						that.getView().getModel("OverviewModel").setProperty("/KPI/1/TotAlert", 0);
+						that.getView().getModel("OverviewModel").setProperty("/KPI/1/Status", "None");
+					}
+					else {
+						//Below the "1" is hardcoded because we know that its index is 1
+						that.getView().getModel("OverviewModel").setProperty("/KPI/1/TotAlert", oRetrievedResult.results[0].TotAlert);
+						that.getView().getModel("OverviewModel").setProperty("/KPI/1/Status", oRetrievedResult.results[0].Status);
+					}
+					that.getView().getModel("LocalModel").setProperty("/IsDataLoadingKPI", false);
 				});
 			}
 		},
@@ -108,6 +134,44 @@ sap.ui.define([
 					});
 				}
 
+			}.bind(this));
+		},
+
+		_readData_VR_without_change: function () {
+			return new Promise(function (resolve, reject) {
+				var currentProcess = this.getOwnerComponent().getModel("OverviewModel").getProperty("/ListOfProcess");
+				if (currentProcess.length !== 0) {
+					this.oODataModel.read("/VR_without_changeset", {
+						filters: [
+							new Filter("IdProcessInst", FilterOperator.EQ, currentProcess[this._process].Id)
+						],
+						success: function (oRetrievedResult) {
+							resolve(oRetrievedResult);
+						}.bind(this),
+						error: function (oError) {
+							resolve(oError);
+						}
+					});
+				}
+			}.bind(this));
+		},
+
+		_readData_VR_test: function () {
+			return new Promise(function (resolve, reject) {
+				var currentProcess = this.getOwnerComponent().getModel("OverviewModel").getProperty("/ListOfProcess");
+				if (currentProcess.length !== 0) {
+					this.oODataModel.read("/VR_test_Set", {
+						filters: [
+							new Filter("IdProcessInst", FilterOperator.EQ, currentProcess[this._process].Id)
+						],
+						success: function (oRetrievedResult) {
+							resolve(oRetrievedResult);
+						}.bind(this),
+						error: function (oError) {
+							resolve(oError);
+						}
+					});
+				}
 			}.bind(this));
 		},
 

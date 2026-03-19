@@ -1,0 +1,56 @@
+<mvc:View controllerName="pcc.statistic.sdwp.controller.DetailDetailKPI" xmlns:chart="sap.suite.ui.commons" xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:vizData="sap.viz.ui5.data" xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds" xmlns="sap.m"
+	xmlns:f="sap.f" xmlns:mdc="sap.ui.mdc" xmlns:mdct="sap.ui.mdc.table">
+	<f:DynamicPage id="_IDGenDynamicPage1" toggleHeaderOnTitleClick="false">
+		<f:title>
+			<f:DynamicPageTitle id="IDGenDynamicPageTitle1">
+				<f:heading>
+					<FlexBox id="IDGenFlexBox1" wrap="Wrap" fitContainer="true" alignItems="Center">
+						<Title id="IDGenTitle1" text="{OverviewModel>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+						<!--<Title text="{OverviewModel>name}({OverviewModel>TotAlert})" wrapping="true" class="sapUiTinyMarginEnd"/>-->
+					</FlexBox>
+				</f:heading>
+				<f:navigationActions>
+					<!--<Toolbar width="50%" id="toolbar">-->					
+					<!--</Toolbar>-->
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton1" type="Transparent" icon="sap-icon://full-screen" press=".handleFullScreen" tooltip="Enter Full Screen Mode"
+						visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton2" type="Transparent" icon="sap-icon://exit-full-screen" press=".handleExitFullScreen" tooltip="Exit Full Screen Mode"
+						visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
+					<OverflowToolbarButton id="IDGenOverflowToolbarButton3" type="Transparent" icon="sap-icon://decline" press=".handleClose" tooltip="Close column"
+						visible="{= ${/actionButtonsInfo/endColumn/closeColumn} !== null }"/>
+					<OverflowToolbarButton id="IDExport" type="Transparent" icon="sap-icon://excel-attachment" press="onExport" tooltip="Export"
+						visible="true"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+			<f:content>
+			
+				<!-- <Table id="kpiTable" items="{path : 'OverviewModel>/KPIOdata'}" growing="true" growingThreshold="15" busy="{OverviewModel>/IsDataLoading}" visible="{LocalModel>/IsTableKPI0Visible}"> -->
+				<Table id="kpiTable" busy="{OverviewModel>/IsDataLoading}">
+					<columns>
+					<!--	<Column id="_IDGenColumn">
+							<Text id="_IDGenText" text="{i18n>Processor}" />
+						</Column>
+						<Column id="_IDGenColumn1">
+							<Text id="_IDGenText1" text="{i18n>VR}" />
+						</Column>
+						<Column id="_IDGenColumn2">
+							<Text id="_IDGenText2" text="{i18n>Date}" />
+						</Column>                        -->
+					</columns>
+					
+					<items>
+						 <ColumnListItem id="_IDGenColumnListItem1">
+							<cells>
+						<!--		<Text id="_IDGenText3" text="{OverviewModel>Processor}" />
+								<Text id="_IDGenText4" text="{OverviewModel>IdCheck}" />
+								<Text id="_IDGenText5" text="{path: 'OverviewModel>Date', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}"/>-->
+							</cells> 
+						</ColumnListItem>
+					</items> 
+				</Table>
+			</f:content>				
+	</f:DynamicPage>
+</mvc:View>
