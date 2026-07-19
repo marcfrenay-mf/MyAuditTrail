@@ -5,7 +5,7 @@
     {
       "source": "^/sap/(.*)$",
       "target": "/sap/$1",
-      "destination": "G5J",
+      "destination": "KR5_PCC",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },

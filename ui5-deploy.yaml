@@ -14,12 +14,12 @@ builder:
       afterTask: generateCachebusterInfo
       configuration:
         target:
-          destination: G5J
-          url: https://my551014.payroll.hr.cloud.sap
+          destination: KR5_PCC
+          url: https://my5500851.payroll.hr.cloud.sap
         app:
           name: ZPCCSTAT
           description: PCC Statistics
           package: ZHR_PCC
-          transport: G5JK900073
+          transport: KR5K900073
         exclude:
           - /test/

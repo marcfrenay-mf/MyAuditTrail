@@ -3,10 +3,9 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/m/MessageToast",
-	"sap/ui/model/resource/ResourceModel",
 	"sap/ui/model/json/JSONModel",
 	//	"MyPCC/model/Format"  // Chemin vers votre fichier format.js
-], function (Controller, Filter, FilterOperator, MessageToast, ResourceModel, JSONModel) {
+], function (Controller, Filter, FilterOperator, MessageToast, JSONModel) {
 	"use strict";
 
 	return Controller.extend("pcc.statistic.sdwp.controller.Detail", {

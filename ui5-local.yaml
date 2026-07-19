@@ -24,9 +24,9 @@ server:
         ignoreCertError: false
         backend:
           - path: /sap
-            url: https://my551014.payroll.hr.cloud.sap
-            client: "100"
-            destination: G5J
+            url: https://my5500851.payroll.hr.cloud.sap
+            client: '100'
+            destination: KR5_PCC
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -38,3 +38,8 @@ server:
       configuration:
         component: pcc.statistic.sdwp
         ui5Theme: sap_fiori_3
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
